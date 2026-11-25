@@ -1,63 +1,58 @@
-import Footer from "@/app/_components/footer";
-import { CMS_NAME, HOME_OG_IMAGE_URL } from "@/lib/constants";
+import { HOME_OG_IMAGE_URL } from "@/lib/constants";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 
+import "katex/dist/katex.min.css";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const SITE = "https://credible-answers.github.io";
+const BLOG = "/nextjs-blog";
 
 export const metadata: Metadata = {
-  title: `Next.js Blog Example with ${CMS_NAME}`,
-  description: `A statically generated blog example using Next.js and ${CMS_NAME}.`,
-  openGraph: {
-    images: [HOME_OG_IMAGE_URL],
-  },
+  title: "DID you know that… — Credible Answers",
+  description: "Short notes on difference-in-differences from the Credible Answers team.",
+  openGraph: { images: [HOME_OG_IMAGE_URL] },
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/nextjs-blog/favicon/apple-touch-icon.png"
+          href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+          rel="stylesheet"
         />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/nextjs-blog/favicon/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/nextjs-blog/favicon/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/nextjs-blog/favicon/site.webmanifest" />
-        <link
-          rel="mask-icon"
-          href="/nextjs-blog/favicon/safari-pinned-tab.svg"
-          color="#000000"
-        />
-        <link rel="shortcut icon" href="/nextjs-blog/favicon/favicon.ico" />
-        <meta name="msapplication-TileColor" content="#000000" />
-        <meta
-          name="msapplication-config"
-          content="/nextjs-blog/favicon/browserconfig.xml"
-        />
-        <meta name="theme-color" content="#000" />
-        <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+        <link rel="shortcut icon" href={`${BLOG}/favicon/favicon.ico`} />
       </head>
-      <body className={inter.className}>
-        <div className="min-h-screen">{children}</div>
-        <Footer />
+      <body>
+        <nav className="ca-nav">
+          <a className="nav-logo" href={`${SITE}/`}>Credible Answers</a>
+          <ul className="nav-links">
+            <li><a className="current" href={`${BLOG}/`}>Blog</a></li>
+            <li><a href={`${SITE}/packages.html`}>Packages</a></li>
+            <li><a href={`${SITE}/team.html`}>Team</a></li>
+          </ul>
+        </nav>
+
+        <main>{children}</main>
+
+        <footer className="ca-footer">
+          <img src={`${SITE}/figures/HE%20logo.png`} alt="Funded by the European Union" />
+          <span className="foot-brand">Credible Answers</span>
+          <ul className="foot-links">
+            <li><a href="https://github.com/Credible-Answers" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/Credible-Answers/did_multiplegt_dyn" target="_blank">Docs</a></li>
+            <li><a href="https://github.com/Credible-Answers/ReplicationPackages" target="_blank">Replications</a></li>
+          </ul>
+          <span className="foot-legal">
+            Funded by the European Union (ERC, REALLYCREDIBLE, GA N°101043899). Views and opinions
+            expressed are however those of the author(s) only and do not necessarily reflect those of
+            the European Union or the European Research Council Executive Agency. Neither the European
+            Union nor the granting authority can be held responsible for them.
+          </span>
+        </footer>
       </body>
     </html>
   );

@@ -1,30 +1,33 @@
-import Container from "@/app/_components/container";
-import { HeroPost } from "@/app/_components/hero-post";
-import { Intro } from "@/app/_components/intro";
-import { MoreStories } from "@/app/_components/more-stories";
+import Link from "next/link";
+import DateFormatter from "@/app/_components/date-formatter";
 import { getAllPosts } from "../lib/api";
 
 export default function Index() {
-  const allPosts = getAllPosts();
-
-  const heroPost = allPosts[0];
-
-  const morePosts = allPosts.slice(1);
+  const posts = getAllPosts();
 
   return (
-    <main>
-      <Container>
-        <Intro />
-        <HeroPost
-          title={heroPost.title}
-          coverImage={heroPost.coverImage}
-          date={heroPost.date}
-          author={heroPost.author}
-          slug={heroPost.slug}
-          excerpt={heroPost.excerpt}
-        />
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-      </Container>
-    </main>
+    <>
+      <div className="hero">
+        <span className="eyebrow">Blog · Credible Answers</span>
+        <h1>
+          DID you know <em>that…</em>
+        </h1>
+        <p>Short notes on difference-in-differences, heterogeneous treatment effects and event studies.</p>
+      </div>
+
+      <div className="post-list">
+        {posts.map((post) => (
+          <Link key={post.slug} href={`/posts/${post.slug}`} className="post-card">
+            <span className="post-meta">
+              <DateFormatter dateString={post.date} />
+              {post.author?.name ? ` · ${post.author.name}` : ""}
+            </span>
+            <span className="post-card-title">{post.title}</span>
+            {post.excerpt && <span className="post-card-excerpt">{post.excerpt}</span>}
+            <span className="post-go">Read →</span>
+          </Link>
+        ))}
+      </div>
+    </>
   );
 }
