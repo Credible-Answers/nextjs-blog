@@ -6,7 +6,7 @@ import { join } from "path";
 const postsDirectory = join(process.cwd(), "_posts");
 
 export function getPostSlugs() {
-  return fs.readdirSync(postsDirectory);
+  return fs.readdirSync(postsDirectory).filter((f) => f.endsWith(".md"));
 }
 
 export function getPostBySlug(slug: string) {
@@ -15,7 +15,11 @@ export function getPostBySlug(slug: string) {
   const fileContents = fs.readFileSync(fullPath, "utf8");
   const { data, content } = matter(fileContents);
 
-  return { ...data, slug: realSlug, content } as Post;
+  // YAML turns unquoted dates into Date objects; keep them as ISO strings
+  const date =
+    data.date instanceof Date ? data.date.toISOString() : String(data.date ?? "");
+
+  return { ...data, date, slug: realSlug, content } as Post;
 }
 
 export function getAllPosts(): Post[] {

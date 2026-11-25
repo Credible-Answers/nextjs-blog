@@ -1,17 +1,19 @@
 import cn from "classnames";
 import Link from "next/link";
 import Image from "next/image";
+import { withBasePath } from "@/lib/withBasePath";
 
 type Props = {
   title: string;
-  src: string;
+  src?: string;
   slug?: string;
 };
 
 const CoverImage = ({ title, src, slug }: Props) => {
+  if (!src) return null;
   const image = (
     <Image
-      src={src}
+      src={withBasePath(src)!}
       alt={`Cover Image for ${title}`}
       className={cn("shadow-sm w-full", {
         "hover:shadow-lg transition-shadow duration-200": slug,
